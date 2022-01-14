@@ -10,7 +10,7 @@ import pandas as pd
 # Создание главного окна
 window = tk.Tk()
 window.geometry("550x550")
-window.title("Программа анализа .csv файлов")
+window.title("Программа анализа .csv файла - 2")
 
 # Создание меток вывода
 label_00 = tk.Label(text = "Файл:")
