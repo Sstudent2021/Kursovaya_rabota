@@ -57,16 +57,27 @@ def get_column(df, column_ix):
     for i in range(cnt_rows):
         lst.append(df.iat[i,column_ix])
     return lst
+    
+# Если в этом поле email (по знаку @), пусть вернет True
+def meet_email(field):
+    checkfor = ['@']
+    for s in checkfor:
+        if s in str(field): # Нашлось!
+            return True
+    # Ничего не совпало
+    return False
 
-# Обработчик нажатия кнопки
+# Оообработчик нажатия кнопки
 def process_button():
     file_name = do_dialog()
     label_01['text'] = file_name
     df = pandas_read_csv(file_name)
-    lst = get_column(df, 0)
+    lst = get_column(df, 2)
     for item in lst:
-        output_text.insert(tk.END, str(item) + os.linesep)
-    mb.showinfo(title=None, message = "Готово")
+        output_text.insert(tk.END, str(item) + '   ' 
+            + str(meet_email(item)) + os.linesep)
+        
+    mb.showinfo(title=None, message="Готово!")
 
 # Создание кнопки
 button = tk.Button(window, text = "Прочитать файл", command=process_button)
