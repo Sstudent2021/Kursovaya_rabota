@@ -76,22 +76,34 @@ def list_meet_email(fields_list):
         if meet_email(list_item):
             counter_meet += 1
     # Конец подсчета
-    if counter_meet / counter_total > 0.2:
-        return True
+    ratio = counter_meet / counter_total
+    if ratio > 0.1:
+        return True, ratio
     # Не набралось нужного количества совпадений
-    return False
+    return False, ratio
+    
+# Пройти все столбцы    
+def check_all_columns(df):
+    columns_cnt = df.shape[1]
+    for i in range(columns_cnt): # От 0 до columns_cnt-1
+        lst = get_column(df, i)
+        result = list_meet_email(lst)
+        if result[0]:
+            output_text.insert(tk.END, "В столбце " + str(i+1)
+                + " предположительно содержится email." + os.linesep)
+            output_text.insert(tk.END, "Процент совпадений " + "{:.2f}".format(result[1]*100)
+                + "%." + os.linesep)
+        else:
+            output_text.insert(tk.END, "Предположений для столбца " + str(i+1)
+                + " не найдено." + os.linesep)
 
-# Оообработчик нажатия кнопки
+# Обработчик нажатия кнопки
 def process_button():
     file_name = do_dialog()
     label_01['text'] = file_name
     df = pandas_read_csv(file_name)
-    lst = get_column(df, 2)
-    if list_meet_email(lst):
-        output_text.insert(tk.END, "В списке предположительно содержится email." + os.linesep)
-    else:
-        output_text.insert(tk.END, "Предположений для списка не найдено." + os.linesep)
-        
+    check_all_columns(df)
+    
     mb.showinfo(title=None, message="Готово!")
 
 # Создание кнопки

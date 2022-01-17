@@ -76,7 +76,7 @@ def list_meet_email(fields_list):
         if meet_email(list_item):
             counter_meet += 1
     # Конец подсчета
-    if counter_meet / counter_total > 0.2:
+    if counter_meet / counter_total > 0.1:
         return True
     # Не набралось нужного количества совпадений
     return False
@@ -88,7 +88,7 @@ def check_all_columns(df):
         lst = get_column(df, i)
         if list_meet_email(lst):
             output_text.insert(tk.END, "В столбце " + str(i+1)
-                + " предположительно содержится имя." + os.linesep)
+                + " предположительно содержится email." + os.linesep)
         else:
             output_text.insert(tk.END, "Предположений для столбца " + str(i+1)
                 + " не найдено." + os.linesep)
@@ -99,6 +99,8 @@ def process_button():
     label_01['text'] = file_name
     df = pandas_read_csv(file_name)
     check_all_columns(df)
+    
+    mb.showinfo(title=None, message="Готово!")
 
 # Создание кнопки
 button = tk.Button(window, text = "Прочитать файл", command=process_button)
